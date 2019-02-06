@@ -20,6 +20,7 @@ Tweak for AirPods using the Side button (iPhone 6 and later)
 #import "MediaRemote.h" 
 ```
 
+See this [issue](https://github.com/AloneMonkey/MonkeyDev/issues/64) if you still need help.
 
 
 
