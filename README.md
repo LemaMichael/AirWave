@@ -14,6 +14,10 @@ Tweak for AirPods using the Side button (iPhone 6 and later)
 
 2. Copy **MediaRemote.framework** to */opt/theos/vendor/lib*
 
+<p align="ceneter">
+ <img src = "/Assets/Help2.png">
+</p>
+
 3. Next add ["MediaRemote.h"](https://github.com/theos/headers/blob/master/MediaRemote/MediaRemote.h) to the project. Don't forget to include the following to the xm file.
 
 ```objective-C
