@@ -1,25 +1,89 @@
 #import <UIKit/UIKit.h>
 #import "MediaRemote.h"
+// https://bit.ly/2Df8ZqP
+// https://www.reddit.com/r/jailbreak/comments/93juw0/request_any_airpod_tweaks/
 
 @interface UIGestureDelayedPress : NSObject
 -(UIPressesEvent *)event;
 @end
 
+@interface SBAssistantController
++(BOOL)isAssistantVisible;
++ (id)sharedInstance;
+- (void)handleSiriButtonUpEventFromSource:(int)arg1;
+- (_Bool)handleSiriButtonDownEventFromSource:(int)arg1 activationEvent:(int)arg2;
+@end
+
+@interface SpringBoard
+-(void)checkCount; // New
+@end
+
+int sideButtonCounts;
+BOOL isDeviceAvailable = false;
+
 %hook SpringBoard
 - (_Bool)_handlePhysicalButtonEvent:(UIPressesEvent *)arg1 {
     long type = arg1.allPresses.allObjects[0].type;
-    int force = arg1.allPresses.allObjects[0].force;
-    if(type == 104 && force == 0) {
-        NSLog(@"Home button pressed!");
+    int force = arg1.allPresses.allObjects[0].force; // 1 -> button pressed, 0 -> button released
+    
+    if (type == 104 && force == 1 && isDeviceAvailable) {
+        sideButtonCounts++;
         
-        static int count = 0;
-        count ++;
-        if(count % 2 != 0){
-            MRMediaRemoteSendCommand(kMRTogglePlayPause, 0);
-        }else{
-            NSLog(@"Else");
-        }
+        // Delay for 0.5 seconds
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self checkCount];
+        });
     }
     return %orig;
 }
+
+%new
+-(void)checkCount {
+    NSLog(@"Side button pressed: %d times", sideButtonCounts);
+    
+    if (sideButtonCounts == 3) {
+        
+        // Call Siri
+        SBAssistantController *assistantController = [%c(SBAssistantController) sharedInstance];
+        [assistantController handleSiriButtonDownEventFromSource:1 activationEvent:1];
+        [assistantController handleSiriButtonUpEventFromSource:1];
+        
+    } else if (sideButtonCounts == 2) {
+        MRMediaRemoteSendCommand(kMRTogglePlayPause, 0);
+    } else {
+        // Do Nothing
+    }
+    
+    // Resetting the button count
+    sideButtonCounts = 0;
+}
 %end
+
+
+
+%hook BluetoothManager
+-(void)postNotificationName:(id)arg1 object:(id)arg2 {
+    
+    //arg1: BluetoothAvailabilityChangedNotification
+    // arg1: BluetoothDeviceDisconnectSuccessNotification
+    // arg1: BluetoothDeviceConnectSuccessNotification
+    // arg1: BluetoothDeviceUpdatedNotification
+    //NSLog(@"arg1: %@, arg2: %@", (NSString *)arg1, arg2);
+    %orig;
+    
+    if ([arg1 isKindOfClass:[NSString class]]) {
+        
+        NSString *notificationName = (NSString *)arg1;
+        
+        if ([notificationName isEqualToString: @"BluetoothDeviceConnectSuccessNotification"]) {
+            isDeviceAvailable = YES;
+        } else if ([notificationName isEqualToString: @"BluetoothDeviceDisconnectSuccessNotification"]) {
+            isDeviceAvailable = NO;
+        } else {
+            // NotificationName will most likely be BluetoothAvailabilityChangedNotification but that doesn't determine if a bluetooth device is connected or not.
+        }
+    }
+}
+
+%end
+

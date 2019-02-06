@@ -2,6 +2,13 @@
 Tweak for AirPods using the Side button (iPhone 6 and later)
 
 
+## Get Started
+- Double press the Side button (Lock screen button) to pause/play 
+
+- Triple press the Side button to Activate Siri
+
+
+
 ## Tools Used
 - [MonkeyDev](https://github.com/AloneMonkey/MonkeyDev) for creating Tweaks 
 
