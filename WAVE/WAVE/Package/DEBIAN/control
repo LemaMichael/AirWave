@@ -1,8 +1,8 @@
 Package: com.Lema.Michael.WAVE
-Name: WAVE
+Name: Wave
 Version: 1.0
 Description: Add extra controls for your AirPods!
-Section: System
+Section: Tweaks
 Depends: firmware (>= 5.0), mobilesubstrate
 Conflicts: 
 Replaces: 

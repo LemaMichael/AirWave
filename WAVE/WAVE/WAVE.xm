@@ -64,10 +64,13 @@ BOOL isDeviceAvailable = false;
 %hook BluetoothManager
 -(void)postNotificationName:(id)arg1 object:(id)arg2 {
     
-    //arg1: BluetoothAvailabilityChangedNotification
-    // arg1: BluetoothDeviceDisconnectSuccessNotification
-    // arg1: BluetoothDeviceConnectSuccessNotification
-    // arg1: BluetoothDeviceUpdatedNotification
+    /*
+     arg1 can be many things:
+        - BluetoothAvailabilityChangedNotification
+        - BluetoothDeviceDisconnectSuccessNotification
+        - BluetoothDeviceConnectSuccessNotification
+        - BluetoothDeviceUpdatedNotification
+     */
     //NSLog(@"arg1: %@, arg2: %@", (NSString *)arg1, arg2);
     %orig;
     
@@ -87,3 +90,20 @@ BOOL isDeviceAvailable = false;
 
 %end
 
+BOOL Enabled;
+static void settingsChangedWave(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo)
+{
+    @autoreleasepool {
+        NSDictionary *WavePrefs = [[[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.Lema.Michael.WAVE.plist"]?:[NSDictionary dictionary] copy];
+        Enabled = (BOOL)[[WavePrefs objectForKey:@"enableWave"]?:@YES boolValue];
+        NSLog(@"is Enabled: %d", Enabled);
+    }
+}
+
+__attribute__((constructor)) static void initialize_Wave()
+{
+    @autoreleasepool {
+        CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, settingsChangedWave, CFSTR("com.Lema.Michael.WAVE-preferencesChanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
+        settingsChangedWave(NULL, NULL, NULL, NULL, NULL);
+    }
+}

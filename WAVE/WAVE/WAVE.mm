@@ -43,7 +43,7 @@ BOOL isDeviceAvailable = false;
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class BluetoothManager; @class SpringBoard; @class SBAssistantController; 
+@class SpringBoard; @class SBAssistantController; @class BluetoothManager; 
 static _Bool (*_logos_orig$_ungrouped$SpringBoard$_handlePhysicalButtonEvent$)(_LOGOS_SELF_TYPE_NORMAL SpringBoard* _LOGOS_SELF_CONST, SEL, UIPressesEvent *); static _Bool _logos_method$_ungrouped$SpringBoard$_handlePhysicalButtonEvent$(_LOGOS_SELF_TYPE_NORMAL SpringBoard* _LOGOS_SELF_CONST, SEL, UIPressesEvent *); static void _logos_method$_ungrouped$SpringBoard$checkCount(_LOGOS_SELF_TYPE_NORMAL SpringBoard* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$_ungrouped$BluetoothManager$postNotificationName$object$)(_LOGOS_SELF_TYPE_NORMAL BluetoothManager* _LOGOS_SELF_CONST, SEL, id, id); static void _logos_method$_ungrouped$BluetoothManager$postNotificationName$object$(_LOGOS_SELF_TYPE_NORMAL BluetoothManager* _LOGOS_SELF_CONST, SEL, id, id); 
 static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBAssistantController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBAssistantController"); } return _klass; }
 #line 24 "/Users/michael/Wave/WAVE/WAVE/WAVE.xm"
@@ -91,10 +91,13 @@ static void _logos_method$_ungrouped$SpringBoard$checkCount(_LOGOS_SELF_TYPE_NOR
 static void _logos_method$_ungrouped$BluetoothManager$postNotificationName$object$(_LOGOS_SELF_TYPE_NORMAL BluetoothManager* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, id arg1, id arg2) {
     
     
+
+
+
+
+
+
     
-    
-    
-    NSLog(@"arg1: %@, arg2: %@", (NSString *)arg1, arg2);
     _logos_orig$_ungrouped$BluetoothManager$postNotificationName$object$(self, _cmd, arg1, arg2);
     
     if ([arg1 isKindOfClass:[NSString class]]) {
@@ -113,6 +116,23 @@ static void _logos_method$_ungrouped$BluetoothManager$postNotificationName$objec
 
 
 
+BOOL Enabled;
+static void settingsChangedWave(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo)
+{
+    @autoreleasepool {
+        NSDictionary *WavePrefs = [[[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.Lema.Michael.WAVE.plist"]?:[NSDictionary dictionary] copy];
+        Enabled = (BOOL)[[WavePrefs objectForKey:@"enableWave"]?:@YES boolValue];
+        NSLog(@"is Enabled: %d", Enabled);
+    }
+}
+
+__attribute__((constructor)) static void initialize_Wave()
+{
+    @autoreleasepool {
+        CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, settingsChangedWave, CFSTR("com.Lema.Michael.WAVE-preferencesChanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
+        settingsChangedWave(NULL, NULL, NULL, NULL, NULL);
+    }
+}
 static __attribute__((constructor)) void _logosLocalInit() {
 {Class _logos_class$_ungrouped$SpringBoard = objc_getClass("SpringBoard"); MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(_handlePhysicalButtonEvent:), (IMP)&_logos_method$_ungrouped$SpringBoard$_handlePhysicalButtonEvent$, (IMP*)&_logos_orig$_ungrouped$SpringBoard$_handlePhysicalButtonEvent$);{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SpringBoard, @selector(checkCount), (IMP)&_logos_method$_ungrouped$SpringBoard$checkCount, _typeEncoding); }Class _logos_class$_ungrouped$BluetoothManager = objc_getClass("BluetoothManager"); MSHookMessageEx(_logos_class$_ungrouped$BluetoothManager, @selector(postNotificationName:object:), (IMP)&_logos_method$_ungrouped$BluetoothManager$postNotificationName$object$, (IMP*)&_logos_orig$_ungrouped$BluetoothManager$postNotificationName$object$);} }
-#line 90 "/Users/michael/Wave/WAVE/WAVE/WAVE.xm"
+#line 110 "/Users/michael/Wave/WAVE/WAVE/WAVE.xm"
