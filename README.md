@@ -3,9 +3,12 @@ Tweak for AirPods using the Side button (iPhone 6 and later)
 
 
 ## Get Started
-- Double press the Side button (Lock screen button) to pause/play 
+- Double and Triple Press the lock screen button for more actions
+<p align="center">
+ <img src = "/Assets/Demo1.PNG" height = "475"> 
+ <img src = "/Assets/Demo2.PNG" height = "475">
+</p>
 
-- Triple press the Side button to Activate Siri
 
 
 
@@ -21,19 +24,19 @@ Tweak for AirPods using the Side button (iPhone 6 and later)
 
 2. Copy **MediaRemote.framework** to */opt/theos/vendor/lib*
 
-<p align="ceneter">
+<p align="center">
  <img src = "/Assets/Help2.png">
 </p>
 
-3. Next add ["MediaRemote.h"](https://github.com/theos/headers/blob/master/MediaRemote/MediaRemote.h) to the project. Don't forget to include the following to the xm file.
+3. Next add ["MediaRemote.h"](https://github.com/theos/headers/blob/master/MediaRemote/MediaRemote.h) to the project. Follow the same steps to add the **Preferences.framework**
 
-```objective-C
-#import "MediaRemote.h" 
-```
 
 See this [issue](https://github.com/AloneMonkey/MonkeyDev/issues/64) if you still need help.
 
 
+
+## Issue:
+- [x] The Respring Button does not work
 
 
 
