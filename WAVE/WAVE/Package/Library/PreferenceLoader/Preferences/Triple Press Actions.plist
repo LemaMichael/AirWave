@@ -68,14 +68,6 @@
                 <key>PostNotification</key>
                 <string>com.Lema.Michael.WAVE-preferencesChanged</string>
             </dict>
-            <dict>
-                <key>cell</key>
-                <string>PSButtonCell</string>
-                <key>action</key>
-                <string>respring</string>
-                <key>label</key>
-                <string>Apply Changes!</string>
-            </dict>
         </array>
         <key>title</key>
         <string>Triple Press Actions</string>

@@ -57,7 +57,7 @@ BOOL tPreviousTrack;
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class SpringBoard; @class BluetoothManager; @class SBAssistantController; 
+@class BluetoothManager; @class SBAssistantController; @class SpringBoard; 
 static _Bool (*_logos_orig$_ungrouped$SpringBoard$_handlePhysicalButtonEvent$)(_LOGOS_SELF_TYPE_NORMAL SpringBoard* _LOGOS_SELF_CONST, SEL, UIPressesEvent *); static _Bool _logos_method$_ungrouped$SpringBoard$_handlePhysicalButtonEvent$(_LOGOS_SELF_TYPE_NORMAL SpringBoard* _LOGOS_SELF_CONST, SEL, UIPressesEvent *); static void _logos_method$_ungrouped$SpringBoard$checkCount(_LOGOS_SELF_TYPE_NORMAL SpringBoard* _LOGOS_SELF_CONST, SEL); static void (*_logos_orig$_ungrouped$BluetoothManager$postNotificationName$object$)(_LOGOS_SELF_TYPE_NORMAL BluetoothManager* _LOGOS_SELF_CONST, SEL, id, id); static void _logos_method$_ungrouped$BluetoothManager$postNotificationName$object$(_LOGOS_SELF_TYPE_NORMAL BluetoothManager* _LOGOS_SELF_CONST, SEL, id, id); 
 static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$SBAssistantController(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBAssistantController"); } return _klass; }
 #line 38 "/Users/michael/Wave/WAVE/WAVE/WAVE.xm"
@@ -85,6 +85,7 @@ static void _logos_method$_ungrouped$SpringBoard$checkCount(_LOGOS_SELF_TYPE_NOR
     NSLog(@"Side button pressed: %d times", sideButtonCounts);
     
     if (sideButtonCounts == 3) {
+        
         if (tSiri) {
             
             SBAssistantController *assistantController = [_logos_static_class_lookup$SBAssistantController() sharedInstance];
@@ -96,7 +97,7 @@ static void _logos_method$_ungrouped$SpringBoard$checkCount(_LOGOS_SELF_TYPE_NOR
             MRMediaRemoteSendCommand(kMRNextTrack, 0);
         } else if (tPreviousTrack) {
             MRMediaRemoteSendCommand(kMRPreviousTrack, 0);
-        } 
+        }
         
     } else if (sideButtonCounts == 2) {
         
@@ -188,4 +189,4 @@ __attribute__((constructor)) static void initialize_Wave()
 
 static __attribute__((constructor)) void _logosLocalInit() {
 {Class _logos_class$_ungrouped$SpringBoard = objc_getClass("SpringBoard"); MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(_handlePhysicalButtonEvent:), (IMP)&_logos_method$_ungrouped$SpringBoard$_handlePhysicalButtonEvent$, (IMP*)&_logos_orig$_ungrouped$SpringBoard$_handlePhysicalButtonEvent$);{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SpringBoard, @selector(checkCount), (IMP)&_logos_method$_ungrouped$SpringBoard$checkCount, _typeEncoding); }Class _logos_class$_ungrouped$BluetoothManager = objc_getClass("BluetoothManager"); MSHookMessageEx(_logos_class$_ungrouped$BluetoothManager, @selector(postNotificationName:object:), (IMP)&_logos_method$_ungrouped$BluetoothManager$postNotificationName$object$, (IMP*)&_logos_orig$_ungrouped$BluetoothManager$postNotificationName$object$);} }
-#line 163 "/Users/michael/Wave/WAVE/WAVE/WAVE.xm"
+#line 164 "/Users/michael/Wave/WAVE/WAVE/WAVE.xm"

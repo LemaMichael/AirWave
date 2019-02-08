@@ -37,16 +37,6 @@
 		</dict>
 		<dict>
 			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>action</key>
-			<string>respring</string>
-			<key>label</key>
-			<string>Respring</string>
-			<key>PostNotification</key>
-			<string>com.Lema.Michael.WAVE-respring</string>
-		</dict>
-		<dict>
-			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
 			<string>AirPod Controls</string>
@@ -62,6 +52,20 @@
 			<string>PSLinkCell</string>
 			<key>label</key>
 			<string>Triple Press Actions</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>Remember to respring your device for any new changes made and reconnect your Airpods to bluetooth</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>action</key>
+			<string>respring</string>
+			<key>label</key>
+			<string>Respring</string>
 		</dict>
 		<dict>
 			<key>cell</key>
