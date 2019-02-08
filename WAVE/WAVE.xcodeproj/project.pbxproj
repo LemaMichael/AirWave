@@ -13,6 +13,8 @@
 		4C6EB8FA220AAABD00BF3F7B /* WAVE.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4C6EB8F9220AAABD00BF3F7B /* WAVE.mm */; };
 		4C6EB904220AAAFB00BF3F7B /* MediaRemote.h in Sources */ = {isa = PBXBuildFile; fileRef = 4C6EB903220AAAFB00BF3F7B /* MediaRemote.h */; };
 		4C6EB907220AB00F00BF3F7B /* MediaRemote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C6EB905220AAB1300BF3F7B /* MediaRemote.framework */; };
+		4CD379B6220D81660082E6F1 /* Preferences.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CD379B5220D81660082E6F1 /* Preferences.framework */; };
+		4CD379D6220D91370082E6F1 /* MyListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CD379D5220D91370082E6F1 /* MyListController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,11 @@
 		4C6EB8FD220AAABE00BF3F7B /* WAVE.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = WAVE.plist; path = Package/Library/MobileSubstrate/DynamicLibraries/WAVE.plist; sourceTree = "<group>"; };
 		4C6EB903220AAAFB00BF3F7B /* MediaRemote.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaRemote.h; sourceTree = "<group>"; };
 		4C6EB905220AAB1300BF3F7B /* MediaRemote.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaRemote.framework; path = ../MediaRemote.framework; sourceTree = "<group>"; };
+		4CD379B5220D81660082E6F1 /* Preferences.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Preferences.framework; path = ../../Desktop/Preferences.framework; sourceTree = "<group>"; };
+		4CD379D4220D91370082E6F1 /* Double Press Actions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Double Press Actions.plist"; path = "Package/Library/PreferenceLoader/Preferences/Double Press Actions.plist"; sourceTree = "<group>"; };
+		4CD379D5220D91370082E6F1 /* MyListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyListController.m; path = Package/Library/PreferenceLoader/Preferences/MyListController.m; sourceTree = "<group>"; };
+		4CD379D7220D91C10082E6F1 /* Triple Press Actions.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Triple Press Actions.plist"; path = "Package/Library/PreferenceLoader/Preferences/Triple Press Actions.plist"; sourceTree = "<group>"; };
+		4CD379DA220D9C5E0082E6F1 /* PreferencesUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencesUI.framework; path = ../../Desktop/PreferencesUI.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CD379B6220D81660082E6F1 /* Preferences.framework in Frameworks */,
 				4C6EB907220AB00F00BF3F7B /* MediaRemote.framework in Frameworks */,
 				4C6EB8E7220AAABD00BF3F7B /* UIKit.framework in Frameworks */,
 				4C6EB8E9220AAABD00BF3F7B /* Foundation.framework in Frameworks */,
@@ -67,6 +75,8 @@
 		4C6EB8E5220AAABD00BF3F7B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4CD379DA220D9C5E0082E6F1 /* PreferencesUI.framework */,
+				4CD379B5220D81660082E6F1 /* Preferences.framework */,
 				4C6EB905220AAB1300BF3F7B /* MediaRemote.framework */,
 				4C6EB8E6220AAABD00BF3F7B /* UIKit.framework */,
 				4C6EB8E8220AAABD00BF3F7B /* Foundation.framework */,
@@ -123,6 +133,9 @@
 		4C6EB8F2220AAABD00BF3F7B /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
+				4CD379D4220D91370082E6F1 /* Double Press Actions.plist */,
+				4CD379D7220D91C10082E6F1 /* Triple Press Actions.plist */,
+				4CD379D5220D91370082E6F1 /* MyListController.m */,
 				4C6EB8F3220AAABD00BF3F7B /* WAVE.plist */,
 				4C6EB8F4220AAABD00BF3F7B /* WAVEIcon.png */,
 				4C6EB8F5220AAABD00BF3F7B /* WAVEIcon@2x.png */,
@@ -261,6 +274,7 @@
 			files = (
 				4C6EB904220AAAFB00BF3F7B /* MediaRemote.h in Sources */,
 				4C6EB8FA220AAABD00BF3F7B /* WAVE.mm in Sources */,
+				4CD379D6220D91370082E6F1 /* MyListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
