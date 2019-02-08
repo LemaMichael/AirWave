@@ -59,22 +59,17 @@ BOOL tPreviousTrack;
     NSLog(@"Side button pressed: %d times", sideButtonCounts);
     
     if (sideButtonCounts == 3) {
-        /*
-         BOOL tSiri;
-         BOOL tPlayPause;
-         BOOL tNextTrack;
-         BOOL tPreviousTrack;
-         */
+        
         if (tSiri) {
             // Call Siri
             SBAssistantController *assistantController = [%c(SBAssistantController) sharedInstance];
             [assistantController handleSiriButtonDownEventFromSource:1 activationEvent:1];
             [assistantController handleSiriButtonUpEventFromSource:1];
-        } if (tPlayPause) {
+        } else if (tPlayPause) {
             MRMediaRemoteSendCommand(kMRTogglePlayPause, 0);
-        } if (tNextTrack) {
+        } else if (tNextTrack) {
             MRMediaRemoteSendCommand(kMRNextTrack, 0);
-        } if (tPreviousTrack) {
+        } else if (tPreviousTrack) {
             MRMediaRemoteSendCommand(kMRPreviousTrack, 0);
         }
         
@@ -85,13 +80,14 @@ BOOL tPreviousTrack;
             SBAssistantController *assistantController = [%c(SBAssistantController) sharedInstance];
             [assistantController handleSiriButtonDownEventFromSource:1 activationEvent:1];
             [assistantController handleSiriButtonUpEventFromSource:1];
-        }  if (dPlayPause) {
+        }  else if (dPlayPause) {
             MRMediaRemoteSendCommand(kMRTogglePlayPause, 0);
-        }  if (dNextTrack) {
+        }  else if (dNextTrack) {
             MRMediaRemoteSendCommand(kMRNextTrack, 0);
-        }  if (dPreviousTrack) {
+        }  else if (dPreviousTrack) {
             MRMediaRemoteSendCommand(kMRPreviousTrack, 0);
         }
+        
     } else {
         // Do Nothing
     }
