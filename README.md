@@ -1,5 +1,5 @@
 # Wave
-Tweak for AirPods using the Side button (iPhone 6 and later)
+Tweak for AirPods using the Power button 
 
 Since the release of iOS 11,  each AirPod can be configured to a different action when double-tapped. Although there are no wires,  it is a nuisance to control. It is not practical to double-tap each AirPod when jogging or on a crowded subway/bus. Being limited to just one action per AirPod doesn't help either. This is where Wave helps. Wave allows you to keep your customized control for each AirPod by utilizing the power button to control the music. If you assigned the Left and Right AirPod to Play/Pause and Next Track, you can now double and triple press the power button to activate Siri and play the Previous Track. The double and triple actions are configurable for you to decide. Wave activates when your phone connects to your AirPods and deactivates when you put it back in your charging case.  
 
