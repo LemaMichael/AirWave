@@ -90,20 +90,25 @@ BOOL isDeviceAvailable = false;
 
 %end
 
+
 BOOL Enabled;
-static void settingsChangedWave(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo)
+static void loadPrefs()
 {
-    @autoreleasepool {
-        NSDictionary *WavePrefs = [[[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.Lema.Michael.WAVE.plist"]?:[NSDictionary dictionary] copy];
-        Enabled = (BOOL)[[WavePrefs objectForKey:@"enableWave"]?:@YES boolValue];
+    NSMutableDictionary *WavePrefs = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.Lema.Michael.WAVE.plist"];
+    if(WavePrefs)
+    {
+        Enabled = [WavePrefs objectForKey:@"enableWave"] ? [[WavePrefs objectForKey:@"enableWave"] boolValue] : Enabled;
         NSLog(@"is Enabled: %d", Enabled);
+        
     }
+    [WavePrefs release];
 }
 
-__attribute__((constructor)) static void initialize_Wave()
+%ctor
 {
-    @autoreleasepool {
-        CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, settingsChangedWave, CFSTR("com.Lema.Michael.WAVE-preferencesChanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
-        settingsChangedWave(NULL, NULL, NULL, NULL, NULL);
-    }
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)loadPrefs, CFSTR("com.Lema.Michael.WAVE-preferencesChanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
+    loadPrefs();
+    
 }
+
+
