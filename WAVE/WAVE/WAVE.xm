@@ -22,19 +22,34 @@ int sideButtonCounts;
 BOOL isDeviceAvailable = false;
 BOOL tweakEnabled;
 
+// Double Press Preferences
+BOOL dSiri;
+BOOL dPlayPause;
+BOOL dNextTrack;
+BOOL dPreviousTrack;
+
+// Triple Press Preferences
+BOOL tSiri;
+BOOL tPlayPause;
+BOOL tNextTrack;
+BOOL tPreviousTrack;
+
 
 %hook SpringBoard
 - (_Bool)_handlePhysicalButtonEvent:(UIPressesEvent *)arg1 {
     long type = arg1.allPresses.allObjects[0].type;
     int force = arg1.allPresses.allObjects[0].force; // 1 -> button pressed, 0 -> button released
     
-    if (type == 104 && force == 1 && isDeviceAvailable && tweakEnabled) {
-        sideButtonCounts++;
+    if (tweakEnabled) {
+        if (type == 104 && force == 1 && isDeviceAvailable) {
+            sideButtonCounts++;
+            
+            // Delay for 0.5 seconds
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self checkCount];
+            });
+        }
         
-        // Delay for 0.5 seconds
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self checkCount];
-        });
     }
     return %orig;
 }
@@ -44,14 +59,39 @@ BOOL tweakEnabled;
     NSLog(@"Side button pressed: %d times", sideButtonCounts);
     
     if (sideButtonCounts == 3) {
-        
-        // Call Siri
-        SBAssistantController *assistantController = [%c(SBAssistantController) sharedInstance];
-        [assistantController handleSiriButtonDownEventFromSource:1 activationEvent:1];
-        [assistantController handleSiriButtonUpEventFromSource:1];
+        /*
+         BOOL tSiri;
+         BOOL tPlayPause;
+         BOOL tNextTrack;
+         BOOL tPreviousTrack;
+         */
+        if (tSiri) {
+            // Call Siri
+            SBAssistantController *assistantController = [%c(SBAssistantController) sharedInstance];
+            [assistantController handleSiriButtonDownEventFromSource:1 activationEvent:1];
+            [assistantController handleSiriButtonUpEventFromSource:1];
+        } if (tPlayPause) {
+            MRMediaRemoteSendCommand(kMRTogglePlayPause, 0);
+        } if (tNextTrack) {
+            MRMediaRemoteSendCommand(kMRNextTrack, 0);
+        } if (tPreviousTrack) {
+            MRMediaRemoteSendCommand(kMRPreviousTrack, 0);
+        }
         
     } else if (sideButtonCounts == 2) {
-        MRMediaRemoteSendCommand(kMRTogglePlayPause, 0);
+        
+        if (dSiri) {
+            // Call Siri
+            SBAssistantController *assistantController = [%c(SBAssistantController) sharedInstance];
+            [assistantController handleSiriButtonDownEventFromSource:1 activationEvent:1];
+            [assistantController handleSiriButtonUpEventFromSource:1];
+        }  if (dPlayPause) {
+            MRMediaRemoteSendCommand(kMRTogglePlayPause, 0);
+        }  if (dNextTrack) {
+            MRMediaRemoteSendCommand(kMRNextTrack, 0);
+        }  if (dPreviousTrack) {
+            MRMediaRemoteSendCommand(kMRPreviousTrack, 0);
+        }
     } else {
         // Do Nothing
     }
@@ -68,10 +108,10 @@ BOOL tweakEnabled;
     
     /*
      arg1 can be many things:
-        - BluetoothAvailabilityChangedNotification
-        - BluetoothDeviceDisconnectSuccessNotification
-        - BluetoothDeviceConnectSuccessNotification
-        - BluetoothDeviceUpdatedNotification
+     - BluetoothAvailabilityChangedNotification
+     - BluetoothDeviceDisconnectSuccessNotification
+     - BluetoothDeviceConnectSuccessNotification
+     - BluetoothDeviceUpdatedNotification
      */
     //NSLog(@"arg1: %@, arg2: %@", (NSString *)arg1, arg2);
     %orig;
@@ -93,23 +133,35 @@ BOOL tweakEnabled;
 %end
 
 
-static void loadPrefs()
+static void settingsChangedWave(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo)
 {
-    NSMutableDictionary *WavePrefs = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.Lema.Michael.WAVE.plist"];
-    if(WavePrefs)
-    {
-        tweakEnabled = [WavePrefs objectForKey:@"enableWave"] ? [[WavePrefs objectForKey:@"enableWave"] boolValue] : tweakEnabled;
-        NSLog(@"is tweak Enabled: %d", tweakEnabled);
+    @autoreleasepool {
+        NSDictionary *WavePrefs = [[[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.Lema.Michael.WAVE.plist"]?:[NSDictionary dictionary] copy];
+        tweakEnabled = (BOOL)[[WavePrefs objectForKey:@"enableWave"]?:@YES boolValue];
         
+        // Double Press Preferences
+        dSiri = (BOOL)[[WavePrefs objectForKey:@"dSiri"]?:@NO boolValue];
+        dPlayPause = (BOOL)[[WavePrefs objectForKey:@"dPlayPause"]?:@NO boolValue];
+        dNextTrack = (BOOL)[[WavePrefs objectForKey:@"dNextTrack"]?:@NO boolValue];
+        dPreviousTrack = (BOOL)[[WavePrefs objectForKey:@"dPreviousTrack"]?:@NO boolValue];
+        
+        
+        // Triple Press Preferences
+        tSiri = (BOOL)[[WavePrefs objectForKey:@"tSiri"]?:@NO boolValue];
+        tPlayPause = (BOOL)[[WavePrefs objectForKey:@"tPlayPause"]?:@NO boolValue];
+        tNextTrack = (BOOL)[[WavePrefs objectForKey:@"tNextTrack"]?:@NO boolValue];
+        tPreviousTrack = (BOOL)[[WavePrefs objectForKey:@"tPreviousTrack"]?:@NO boolValue];
+        
+        NSLog(@"is tweak Enabled: %d, dSiri: %d, dPlayPause: %d,  dNextTrack: %d, dPreviousTrack: %d", tweakEnabled, dSiri, dPlayPause, dNextTrack, dPreviousTrack);
+        NSLog(@"tSiri: %d, tPlayPause: %d,  tNextTrack: %d, tPreviousTrack: %d", tSiri, tPlayPause, tNextTrack, tPreviousTrack);
     }
-    [WavePrefs release];
 }
 
-%ctor
+__attribute__((constructor)) static void initialize_Wave()
 {
-    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)loadPrefs, CFSTR("com.Lema.Michael.WAVE-preferencesChanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
-    loadPrefs();
-    
+    @autoreleasepool {
+         CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, settingsChangedWave, CFSTR("com.Lema.Michael.WAVE-preferencesChanged"), NULL, CFNotificationSuspensionBehaviorCoalesce);
+        settingsChangedWave(NULL, NULL, NULL, NULL, NULL);
+    }
 }
-
 
