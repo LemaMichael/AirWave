@@ -20,13 +20,15 @@
 
 int sideButtonCounts;
 BOOL isDeviceAvailable = false;
+BOOL tweakEnabled;
+
 
 %hook SpringBoard
 - (_Bool)_handlePhysicalButtonEvent:(UIPressesEvent *)arg1 {
     long type = arg1.allPresses.allObjects[0].type;
     int force = arg1.allPresses.allObjects[0].force; // 1 -> button pressed, 0 -> button released
     
-    if (type == 104 && force == 1 && isDeviceAvailable) {
+    if (type == 104 && force == 1 && isDeviceAvailable && tweakEnabled) {
         sideButtonCounts++;
         
         // Delay for 0.5 seconds
@@ -91,14 +93,13 @@ BOOL isDeviceAvailable = false;
 %end
 
 
-BOOL Enabled;
 static void loadPrefs()
 {
     NSMutableDictionary *WavePrefs = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.Lema.Michael.WAVE.plist"];
     if(WavePrefs)
     {
-        Enabled = [WavePrefs objectForKey:@"enableWave"] ? [[WavePrefs objectForKey:@"enableWave"] boolValue] : Enabled;
-        NSLog(@"is Enabled: %d", Enabled);
+        tweakEnabled = [WavePrefs objectForKey:@"enableWave"] ? [[WavePrefs objectForKey:@"enableWave"] boolValue] : tweakEnabled;
+        NSLog(@"is tweak Enabled: %d", tweakEnabled);
         
     }
     [WavePrefs release];
