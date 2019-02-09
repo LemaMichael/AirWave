@@ -9,7 +9,7 @@ Since the release of iOS 11,  each AirPod can be configured to a different actio
 <p align="center">
 <img src = "/Assets/Demo1.PNG" height = "475"> 
 <img src = "/Assets/Demo2.PNG" height = "475">
-<img src = "/Assets/Demo2.PNG" height = "475">
+<img src = "/Assets/Demo3.PNG" height = "475">
 </p>
 
 
