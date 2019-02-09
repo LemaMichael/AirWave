@@ -7,8 +7,9 @@ Since the release of iOS 11,  each AirPod can be configured to a different actio
 ## Get Started
 - Go to **General** -> **Settings** -> **AirWave** to configure the Power button actions.
 <p align="center">
- <img src = "/Assets/Demo1.PNG" height = "475"> 
- <img src = "/Assets/Demo2.PNG" height = "475">
+<img src = "/Assets/Demo1.PNG" height = "475"> 
+<img src = "/Assets/Demo2.PNG" height = "475">
+<img src = "/Assets/Demo2.PNG" height = "475">
 </p>
 
 
